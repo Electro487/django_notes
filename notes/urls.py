@@ -21,6 +21,6 @@ from base.views import *
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("", home),
-    path("note_type/", note_type)
-
+    path("note_type/", note_type),
+    path("create_note/", create_note)
 ]
