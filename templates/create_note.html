@@ -10,7 +10,8 @@
 <body>
     <form method="POST">
       {% csrf_token %}
-        <div class="mb-3">
+      {{form}}
+        {% comment %} <div class="mb-3">
           <label for="clicking_name_output_select_text" class="form-label">Name</label>
           <input type="text" class="form-control" name="name" id="clicking_name_output_select_text" aria-describedby="emailHelp">
         </div>
@@ -25,8 +26,9 @@
                     <option value="{{type.id}}">{{type.name}}</option>
                 {% endfor %}
               </select>
-        </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+            {% endcomment %}
+            <button type="submit" class="btn btn-primary">Submit</button> 
       </form>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
