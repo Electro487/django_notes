@@ -22,5 +22,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path("", home),
     path("note_type/", note_type),
-    path("create_note/", create_note)
+    path("create_note/", create_note),
+    path("create_notetype/", create_notetype)
 ]
