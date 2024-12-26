@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import Note, NoteType
 from .forms import NoteForm, NoteFormType
 
@@ -53,3 +53,18 @@ def create_notetype(request):
             notetype_form_obj.save()
     data = {"form_type": notetype_form_obj}
     return render(request, "create_notetype.html", context=data) 
+
+def edit_note(request, pk):
+    note_obj = Note.objects.get(id=pk)
+    if request.method == "POST":
+        form_obj = NoteForm(instance=note_obj, data=request.POST)
+        if form_obj.is_valid():
+            form_obj.save()
+    form_obj = NoteForm(instance=note_obj)
+    data = {"form": form_obj}
+    return render(request, "edit_note.html", context=data)
+
+def delete_note(request, pk):
+    note_obj = Note.objects.get(id=pk)
+    note_obj.delete()
+    return redirect("home")
