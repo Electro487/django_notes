@@ -25,5 +25,6 @@ urlpatterns = [
     path("create_note/", create_note, name="create_note"),
     path("create_notetype/", create_notetype, name="create_notetype"),
     path("edit_note/<int:pk>/", edit_note, name="edit_note"),
-    path("delete_note/<int:pk>", delete_note, name="delete_note")
+    path("delete_note/<int:pk>", delete_note, name="delete_note"),
+    path("delete_all_note/", delete_all_note, name="delete_all_note")
 ]

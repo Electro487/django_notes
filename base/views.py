@@ -68,3 +68,8 @@ def delete_note(request, pk):
     note_obj = Note.objects.get(id=pk)
     note_obj.delete()
     return redirect("home")
+
+def delete_all_note(request):
+    note_obj = Note.objects.all()
+    note_obj.delete()
+    return redirect("home")
