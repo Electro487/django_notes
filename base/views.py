@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
 from .models import Note, NoteType
-from .forms import NoteForm, NoteFormType
+from .forms import NoteForm, NoteFormType, UserForm
+from django.contrib.auth.hashers import make_password
+from django.contrib.auth import authenticate, login
 
 
 # Create your views here.
@@ -73,3 +75,32 @@ def delete_all_note(request):
     note_obj = Note.objects.all()
     note_obj.delete()
     return redirect("home")
+
+def register(request):
+    if request.method == "POST":
+        password = request.POST.get("password")
+        print(password)
+        hash_password = make_password(password)
+        print(hash_password)
+        data = request.POST.copy()
+        data["password"] = hash_password
+        user_form_obj = UserForm(data=data)
+        if user_form_obj.is_valid():
+            user_form_obj.save()
+    user_form_obj = UserForm()
+    data = {"form": user_form_obj}
+    return render(request, "register.html", context=data)
+
+def user_login(request):
+    if request.method == "POST":
+        user_username =request.POST.get("username")
+        user_password = request.POST.get("password")
+        user = authenticate(username=user_username, password=user_password)
+
+        if user != None:
+            login(request, user)
+            return redirect("home")
+
+    user_form_obj = UserForm()
+    data = {"form": user_form_obj}
+    return render(request, "login.html", context=data)
