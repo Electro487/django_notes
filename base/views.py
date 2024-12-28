@@ -8,7 +8,7 @@ from django.contrib.auth import authenticate, login
 # Create your views here.
 
 def home(request):
-    note_objs = Note.objects.all()
+    note_objs = Note.objects.all().order_by("id")
     data = {"notes":note_objs}
     # print(request)
     # print()
