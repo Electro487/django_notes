@@ -4,6 +4,7 @@ from .forms import NoteForm, NoteFormType, UserForm
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 
 
 # Create your views here.
@@ -11,7 +12,9 @@ from django.contrib.auth.decorators import login_required
 @login_required
 def home(request):
     note_objs = Note.objects.filter(user=request.user.id).order_by("id")
-    data = {"notes":note_objs}
+    note_type_objs = NoteType.objects.all().order_by("id")
+    data = {"notes":note_objs, "note_types":note_type_objs}
+    
     # print(request)
     # print()
     # print(data["notes"][0].type.name)
@@ -51,6 +54,7 @@ def create_note(request):
             note_obj.user = request.user
             # print(request.user)
             note_obj.save()
+            messages.success(request, "Note Created Successfully")
             return redirect("home")
     data = {"form": note_form_obj}
     return render(request, "create_note.html", context=data)
