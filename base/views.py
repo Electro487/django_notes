@@ -47,15 +47,14 @@ def create_note(request):
     note_form_obj = NoteForm()
     if request.method == "POST":
         note_form_obj = NoteForm(data=request.POST)
-        # print(note_form_obj)
         if note_form_obj.is_valid():
             note_obj = note_form_obj.save()
-            # print(note_obj)
             note_obj.user = request.user
-            # print(request.user)
             note_obj.save()
             messages.success(request, "Note Created Successfully")
             return redirect("home")
+        else:
+            messages.error(request, note_form_obj.errors)
     data = {"form": note_form_obj}
     return render(request, "create_note.html", context=data)
 
@@ -64,7 +63,6 @@ def create_notetype(request):
     notetype_form_obj = NoteFormType()
     if request.method == "POST":
         notetype_form_obj = NoteFormType(data=request.POST)
-        # print(notetype_form_obj)
         if notetype_form_obj.is_valid():
             notetype_form_obj.save()
     data = {"form_type": notetype_form_obj}
@@ -74,10 +72,10 @@ def create_notetype(request):
 def edit_note(request, pk):
     note_obj = Note.objects.get(id=pk)
     if request.method == "POST":
-        form_obj = NoteForm(instance=note_obj, data=request.POST)
+        form_obj = NoteForm(instance=note_obj, data=request.POST) # old data is instance and new updating data is data
         if form_obj.is_valid():
             form_obj.save()
-    form_obj = NoteForm(instance=note_obj)
+    form_obj = NoteForm(instance=note_obj) #instance here is used to display old data in fields when we click the edit button
     data = {"form": form_obj}
     return render(request, "edit_note.html", context=data)
 
@@ -96,9 +94,7 @@ def delete_all_note(request):
 def register(request):
     if request.method == "POST":
         password = request.POST.get("password")
-        print(password)
         hash_password = make_password(password)
-        print(hash_password)
         data = request.POST.copy()
         data["password"] = hash_password
         user_form_obj = UserForm(data=data)
